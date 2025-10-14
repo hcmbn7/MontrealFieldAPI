@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.fieldenv
+.venv/
+venv/
+env/
+fieldenv/
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build / dist
+dist/
+build/
+*.log
+
+# Cache
+.cache/
