@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import fields, users
+from app.api import fields, users, admin
 from app.core.config import get_settings
 from app.db.database import engine, Base
 
@@ -22,6 +22,7 @@ app.add_middleware(
 
 app.include_router(fields.router, prefix=f"{settings.API_PREFIX}")
 app.include_router(users.router, prefix=f"{settings.API_PREFIX}")
+app.include_router(admin.router, prefix=f"{settings.API_PREFIX}")
 
 @app.get("/")
 def root():
