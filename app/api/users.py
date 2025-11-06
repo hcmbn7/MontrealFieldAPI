@@ -4,7 +4,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.models.user_schema import UserCreate, UserOut, UserLogin
+from app.models.user_schema import (
+    UserCreate,
+    UserOut,
+    UserLogin,
+    UserFavoritesUpdate,
+)
 from app.services import user_service
 
 router = APIRouter()
@@ -41,3 +46,27 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
 @router.post("/users/login", response_model=UserOut)
 def login_user(user: UserLogin, db: Session = Depends(get_db)):
     return user_service.authenticate_user(user, db)
+
+
+@router.get("/users/{user_id}/favorites", response_model=list[int])
+def get_user_favorites(user_id: int, db: Session = Depends(get_db)):
+    return user_service.get_user_favorites(user_id, db)
+
+
+@router.post("/users/{user_id}/favorites/{field_id}", response_model=UserOut)
+def add_favorite(user_id: int, field_id: int, db: Session = Depends(get_db)):
+    return user_service.add_favorite_to_user(user_id, field_id, db)
+
+
+@router.delete("/users/{user_id}/favorites/{field_id}", response_model=UserOut)
+def remove_favorite(user_id: int, field_id: int, db: Session = Depends(get_db)):
+    return user_service.remove_favorite_from_user(user_id, field_id, db)
+
+
+@router.put("/users/{user_id}/favorites", response_model=UserOut)
+def replace_favorites(
+    user_id: int,
+    payload: UserFavoritesUpdate,
+    db: Session = Depends(get_db),
+):
+    return user_service.replace_user_favorites(user_id, payload.favorites, db)

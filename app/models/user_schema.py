@@ -9,10 +9,12 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str = Field(..., min_length=8, max_length=72)
+    favorites: list[int] = Field(default_factory=list)
 
 
 class UserOut(UserBase):
     id: int
+    favorites: list[int] = Field(default_factory=list)
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -20,3 +22,7 @@ class UserOut(UserBase):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=72)
+
+
+class UserFavoritesUpdate(BaseModel):
+    favorites: list[int] = Field(default_factory=list)
