@@ -26,3 +26,7 @@ class UserLogin(BaseModel):
 
 class UserFavoritesUpdate(BaseModel):
     favorites: list[int] = Field(default_factory=list)
+
+
+class UserUpdate(BaseModel):
+    full_name: str | None = None

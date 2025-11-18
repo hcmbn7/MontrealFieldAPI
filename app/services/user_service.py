@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.core.security import hash_password, verify_password
 from app.models.field import Field
 from app.models.user import User
-from app.models.user_schema import UserCreate, UserLogin
+from app.models.user_schema import UserCreate, UserLogin, UserUpdate
 
 
 def _normalize_favorites(favorite_ids: list[int] | None) -> list[int]:
@@ -121,6 +121,22 @@ def replace_user_favorites(user_id: int, favorites: list[int], db: Session):
                 detail=f"Terrains introuvables: {', '.join(map(str, missing))}",
             )
     user.favorites = normalized
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def update_user(user_id: int, updates: UserUpdate, db: Session):
+    user = get_user_by_id(user_id, db)
+    has_changes = False
+
+    if updates.full_name is not None:
+        user.full_name = updates.full_name
+        has_changes = True
+
+    if not has_changes:
+        return user
+
     db.commit()
     db.refresh(user)
     return user

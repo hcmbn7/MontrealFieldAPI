@@ -9,6 +9,7 @@ from app.models.user_schema import (
     UserOut,
     UserLogin,
     UserFavoritesUpdate,
+    UserUpdate,
 )
 from app.services import user_service
 
@@ -70,3 +71,12 @@ def replace_favorites(
     db: Session = Depends(get_db),
 ):
     return user_service.replace_user_favorites(user_id, payload.favorites, db)
+
+
+@router.patch("/users/{user_id}", response_model=UserOut)
+def update_user(
+    user_id: int,
+    payload: UserUpdate,
+    db: Session = Depends(get_db),
+):
+    return user_service.update_user(user_id, payload, db)
