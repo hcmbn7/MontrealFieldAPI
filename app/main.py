@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import fields, users, admin, suggestions
+from app.api import fields, users, admin, suggestions, reviews
 from app.core.config import get_settings
 from app.db.database import engine, Base
 
@@ -24,6 +24,7 @@ app.include_router(fields.router, prefix=f"{settings.API_PREFIX}")
 app.include_router(users.router, prefix=f"{settings.API_PREFIX}")
 app.include_router(admin.router, prefix=f"{settings.API_PREFIX}")
 app.include_router(suggestions.router, prefix=f"{settings.API_PREFIX}")
+app.include_router(reviews.router, prefix=f"{settings.API_PREFIX}")
 
 @app.get("/")
 def root():
