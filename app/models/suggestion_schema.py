@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class SuggestionBase(BaseModel):
@@ -38,5 +38,4 @@ class SuggestionOut(SuggestionBase):
     status: str
     published_field_id: Optional[int] = None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
