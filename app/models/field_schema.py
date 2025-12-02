@@ -7,6 +7,7 @@ class FieldCreate(BaseModel):
     name: str
     address: str
     coordinates: List[float]
+    hidden: Optional[bool] = False
     surface_type: Optional[str] = None
     format: Optional[str] = None
     lighting: Optional[bool] = False
@@ -26,6 +27,7 @@ class FieldUpdate(BaseModel):
     name: Optional[str] = None
     address: Optional[str] = None
     coordinates: Optional[List[float]] = None
+    hidden: Optional[bool] = None
     surface_type: Optional[str] = None
     format: Optional[str] = None
     lighting: Optional[bool] = None
