@@ -109,7 +109,6 @@ def replace_user_favorites(user_id: int, favorites: list[int], db: Session):
     user = get_user_by_id(user_id, db)
     normalized = _normalize_favorites(favorites)
     if normalized:
-        # Validate that each referenced field exists
         missing = []
         for field_id in normalized:
             exists = db.query(Field.id).filter(Field.id == field_id).first()

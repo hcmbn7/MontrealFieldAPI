@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import fields, users, admin, suggestions, reviews, games
 from app.core.config import get_settings
 from app.db.database import engine, Base
-from app.models import game  # noqa: F401 ensures tables are registered
+from app.models import game  
 
 settings = get_settings()
 app = FastAPI(title=settings.PROJECT_NAME)
