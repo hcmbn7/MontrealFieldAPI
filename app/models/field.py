@@ -11,6 +11,7 @@ class Field(Base):
     coordinates = Column(ARRAY(Float), nullable=False)         
     surface_type = Column(String, nullable=True)               
     format = Column(String, nullable=True)                     
+    hidden = Column(Boolean, nullable=False, default=False)
     lighting = Column(Boolean, default=False)
     parking = Column(Boolean, default=False)
     accessibility = Column(Boolean, default=False)             
@@ -22,4 +23,3 @@ class Field(Base):
     rating = Column(Float, nullable=True)
     reviews = Column(Integer, nullable=True)
     photos = Column(ARRAY(String), nullable=True)
-
