@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
+from app.models.game_history_schema import GameHistoryOut
 from app.models.game_schema import GameCreate, GameOut, GameUpdate
 from app.services import game_service
 
@@ -18,6 +19,13 @@ def list_games(
     db: Session = Depends(get_db),
 ):
     return game_service.list_games(db, field_id=field_id, after=after or datetime.utcnow())
+
+@router.get("/games/history", response_model=list[GameHistoryOut])
+def list_game_history(
+    organizer_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+):
+    return game_service.list_game_history(db, organizer_id=organizer_id)
 
 
 @router.get("/games/{game_id}", response_model=GameOut)

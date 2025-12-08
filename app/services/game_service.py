@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.models.field import Field
 from app.models.game import Game, GameParticipant
+from app.models.game_history import GameHistory
 from app.models.game_schema import GameCreate, GameUpdate
 from app.models.user import User
 
@@ -27,7 +28,34 @@ def _ensure_user_exists(user_id: int, db: Session):
         raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
 
 
+def archive_past_games(db: Session):
+    now = datetime.utcnow()
+    past_games = db.query(Game).filter(Game.start_at < now).all()
+    if not past_games:
+        return
+    for game in past_games:
+        if game.status == "cancelled":
+            db.delete(game)
+            continue
+        history = GameHistory(
+            title=game.title,
+            field_id=game.field_id,
+            organizer_id=game.organizer_id,
+            start_at=game.start_at,
+            duration_minutes=game.duration_minutes,
+            max_players=game.max_players,
+            skill_level=game.skill_level,
+            notes=game.notes,
+            status=game.status,
+            archived_at=now,
+        )
+        db.add(history)
+        db.delete(game)
+    db.commit()
+
+
 def list_games(db: Session, field_id: int | None = None, after: datetime | None = None):
+    archive_past_games(db)
     query = db.query(Game).order_by(Game.start_at.asc())
     if field_id is not None:
         query = query.filter(Game.field_id == field_id)
@@ -164,3 +192,11 @@ def cancel_game(game_id: int, user_id: int, db: Session):
     db.commit()
     db.refresh(game)
     return game
+
+
+def list_game_history(db: Session, organizer_id: int | None = None):
+    archive_past_games(db)
+    query = db.query(GameHistory).order_by(GameHistory.start_at.desc())
+    if organizer_id is not None:
+        query = query.filter(GameHistory.organizer_id == organizer_id)
+    return query.all()
