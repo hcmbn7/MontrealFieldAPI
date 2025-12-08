@@ -8,6 +8,7 @@ class FieldCreate(BaseModel):
     address: str
     coordinates: List[float]
     hidden: Optional[bool] = False
+    featured: Optional[bool] = False
     surface_type: Optional[str] = None
     format: Optional[str] = None
     lighting: Optional[bool] = False
@@ -33,6 +34,7 @@ class FieldUpdate(BaseModel):
     lighting: Optional[bool] = None
     parking: Optional[bool] = None
     accessibility: Optional[bool] = None
+    featured: Optional[bool] = None
     phone: Optional[str] = None
     website: Optional[str] = None
     borough: Optional[str] = None
