@@ -12,6 +12,7 @@ class Field(Base):
     surface_type = Column(String, nullable=True)               
     format = Column(String, nullable=True)                     
     hidden = Column(Boolean, nullable=False, default=False)
+    featured = Column(Boolean, nullable=False, default=False)
     lighting = Column(Boolean, default=False)
     parking = Column(Boolean, default=False)
     accessibility = Column(Boolean, default=False)             
